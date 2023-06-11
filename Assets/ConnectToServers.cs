@@ -1,4 +1,7 @@
-using static System.Net.Mime.MediaTypeNames;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using Photon.Pun;
+using UnityEngine.UI;
 
 public class ConnectToServers : MonoBehaviourPunCallbacks
 {
@@ -32,4 +35,3 @@ public class ConnectToServers : MonoBehaviourPunCallbacks
         SceneManager.LoadScene("Lobby");
     }
 }
-
