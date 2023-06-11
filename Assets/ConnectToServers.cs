@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using Photon.Pun;
-public class ConnectToServers : MonoBehaviour
+using static System.Net.Mime.MediaTypeNames;
+
+public class ConnectToServers : MonoBehaviourPunCallbacks
 {
     // Start is called before the first frame update
     void Start()
@@ -13,6 +11,25 @@ public class ConnectToServers : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
+    }
+
+    public InputField usernameInput;
+    public Text buttonText;
+
+    public void onClickConnect()
+    {
+        if (usernameInput.text.Length >= 1)
+        {
+            PhotonNetwork.NickName = usernameInput.text;
+            buttonText.text = "Connecting...";
+            PhotonNetwork.ConnectUsingSettings();
+        }
+    }
+
+    public override void OnConnectedToMaster()
+    {
+        SceneManager.LoadScene("Lobby");
     }
 }
+
