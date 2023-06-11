@@ -1,38 +1,54 @@
+using System.Threading.Tasks;
+using Unity.Services.Authentication;
+using Unity.Services.Core;
+using Unity.Services.Lobbies.Models;
+using Unity.Services.Lobbies;
+using UnityEngine;
+using UnityEngine.Networking;
+
 public class lobby : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start();
-
-    private async void start()
- {   
+    private async Task Start()
+    {
         await UnityServices.InitializeAsync();
         AuthenticationService.Instance.SignedIn += () =>
         {
             Debug.Log("Signed In " + AuthenticationService.Instance.PlayerId);
         };
-        object p1    await AuthenticationService.Instance.SignInAnonymouslyAsync();
-        [Command]
-        {
+        await AuthenticationService.Instance.SignInAnonymouslyAsync();
+    }
 
+    [System.Runtime.CompilerServices.AsyncStateMachine(typeof(CreateLobbyStateMachine))]
+    private async void CreateLobby()
+    {
+        try
+        {
+            string lobbyName = "MyLobby";
+            int maxPlayers = 4;
+            Lobby lobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, maxPlayers);
+
+            Debug.Log("Created Lobby! " + " " + lobby.MaxPlayers);
+        }
+        catch (LobbyServiceException e)
+        {
+            Debug.Log(e);
+        }
+    }
+
+    void Update()
+    {
+
+    }
+    private struct CreateLobbyStateMachine : System.Runtime.CompilerServices.IAsyncStateMachine
+    {
+        public void MoveNext()
+        {
+            throw new System.NotImplementedException();
         }
 
-        private async void CreateLobby()
+        public void SetStateMachine(System.Runtime.CompilerServices.IAsyncStateMachine stateMachine)
         {
-            try
-            {
-                string Lobbyname = "MyLobby";
-                int maxplayers 4();
-                Lobby lobby = await LobbyService.Instance.CreateLobbyAsync(LobbyName, maxPlayers);
-
-                Debug.log("Created Lobby! " + " " + lobby.MaxPlayers);
-
-              catch (LobbyServiceExeception e {
-                Debug.Log(e);
-             }
-              // Update is called once per frame
-             void Update()
-              {
-
-               }
-            }                   
+            throw new System.NotImplementedException();
         }
+    }
+}
